@@ -1,0 +1,21 @@
+{
+  "io": {
+    "image_dir": "data/images",
+    "rpc_dir": "data/rpc",
+    "output_dir": "outputs"
+  },
+  "matcher": {
+    "name": "loftr",
+    "weights_path": "/models/loftr/outdoor_ds.ckpt",
+    "extra": {
+      "device": "cuda",
+      "precision": "fp16"
+    }
+  },
+  "pipeline": {
+    "reference_image_id": "image_0001"
+  },
+  "logging": {
+    "level": "INFO"
+  }
+}
