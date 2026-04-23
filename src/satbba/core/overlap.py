@@ -28,22 +28,31 @@ def _import_pyproj() -> tuple[object, object]:
 
 
 def _sample_boundary_points(width: int, height: int) -> list[tuple[float, float]]:
-    """Sample boundary points (4 corners + edge midpoints + quarter points)."""
+    """Sample boundary points in strict perimeter order (clockwise).
 
-    return [
-        (0.0, 0.0),
-        (width - 1.0, 0.0),
-        (width - 1.0, height - 1.0),
-        (0.0, height - 1.0),
-        (width / 2.0, 0.0),
-        (width - 1.0, height / 2.0),
-        (width / 2.0, height - 1.0),
-        (0.0, height / 2.0),
-        (width * 0.25, 0.0),
-        (width * 0.75, 0.0),
-        (width * 0.75, height - 1.0),
-        (width * 0.25, height - 1.0),
-    ]
+    Returned sequence starts at top-left and walks along top->right->bottom->left edges.
+    This ordering avoids self-intersection when constructing polygon from sampled points.
+    """
+
+    w = float(width - 1)
+    h = float(height - 1)
+
+    top = [(0.0, 0.0), (w * 0.25, 0.0), (w * 0.5, 0.0), (w * 0.75, 0.0), (w, 0.0)]
+    right = [(w, h * 0.25), (w, h * 0.5), (w, h * 0.75), (w, h)]
+    bottom = [(w * 0.75, h), (w * 0.5, h), (w * 0.25, h), (0.0, h)]
+    left = [(0.0, h * 0.75), (0.0, h * 0.5), (0.0, h * 0.25)]
+
+    ordered = top + right + bottom + left
+    # Deduplicate potential identical entries on tiny images while preserving order.
+    deduped: list[tuple[float, float]] = []
+    seen: set[tuple[int, int]] = set()
+    for c, r in ordered:
+        key = (int(round(c * 1e6)), int(round(r * 1e6)))
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append((c, r))
+    return deduped
 
 
 def _utm_transformer(lon: float, lat: float) -> object:
