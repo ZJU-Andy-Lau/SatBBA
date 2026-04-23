@@ -1,0 +1,82 @@
+dataset:
+  image_dir: data/images
+  rpc_dir: data/rpc
+
+io:
+  output_dir: outputs
+
+matching:
+  matcher:
+    type: sift
+    weights_path: null
+  overlap_threshold: 0.1
+  geo_distance_threshold: 100.0
+  fundamental_threshold: 1.5
+  h_ref: 0.0
+  sift:
+    nfeatures: 8000
+    ratio: 0.6
+    contrastThreshold: 0.04
+  loftr:
+    weights_path: /path/to/weights.ckpt
+
+reference_image:
+  mode: auto
+  image_id: 0
+
+tracks:
+  min_views: 2
+  max_tracks_per_grid_cell: 50
+  grid_rows: 20
+  grid_cols: 20
+  min_score: null
+  drop_disconnected_from_reference: true
+  max_track_length: null
+  quantization: 0.25
+
+triangulation:
+  h_ref_mode: rpc_median_offset
+  h_ref_value: null
+  reproj_error_threshold: 5.0
+  min_success_views: 2
+  max_nfev: 100
+  method: trf
+  h_min: -1000.0
+  h_max: 10000.0
+
+optimization:
+  use_numba: true
+  batch_size: 10000
+
+rpc_refit:
+  enable: true
+  grid_size: 10
+
+output:
+  save_plots: true
+  export_parquet: true
+  export_rpc: true
+  export_report: true
+
+runtime:
+  num_workers: 8
+  checkpoint_interval: 10
+  resume: null
+  force_recompute: false
+
+logging:
+  level: INFO
+  log_to_file: true
+  log_dir: outputs/logs
+
+ba:
+  stages:
+    use_translation_stage: true
+    use_affine_stage: true
+  robust_loss: soft_l1
+  final_loss: linear
+  reproj_sigma: 1.0
+  affine_reg_weight: 1e-4
+  point_reg_weight: 1e-6
+  outlier_threshold: 5.0
+  max_nfev: 200
