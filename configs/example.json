@@ -1,0 +1,25 @@
+{
+  "io": {
+    "image_dir": "data/images",
+    "rpc_dir": "data/rpc",
+    "output_dir": "outputs"
+  },
+  "matcher": {
+    "name": "sift",
+    "max_features": 8000,
+    "ratio_test": 0.75,
+    "ransac_thresh": 1.5,
+    "weights_path": null,
+    "extra": {}
+  },
+  "pipeline": {
+    "reference_image_id": "image_0001",
+    "robust_loss": "huber",
+    "optimize_stages": ["affine", "points", "joint"]
+  },
+  "logging": {
+    "level": "INFO",
+    "log_to_file": true,
+    "log_dir": "outputs/logs"
+  }
+}
