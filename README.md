@@ -60,6 +60,7 @@ conda activate satbba
 pip install -e .
 ```
 
+<<<<<<< codex/establish-project-structure-and-infrastructure-jkfdmo
 
 ### 无需安装模式（开发机快速运行）
 ```bash
@@ -67,6 +68,8 @@ python main.py run-all --config configs/config.yaml
 python main.py bundle-adjust --config configs/config.yaml
 ```
 
+=======
+>>>>>>> main
 ## 5. 输入数据要求
 
 - 影像：`*.tif`
